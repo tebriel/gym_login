@@ -1,6 +1,8 @@
 gym_login README
 ==================
 
+Build Status: [![Build Status](https://travis-ci.org/tebriel/gym_login.svg?branch=master)](https://travis-ci.org/tebriel/gym_login)
+
 Getting Started
 ---------------
 
