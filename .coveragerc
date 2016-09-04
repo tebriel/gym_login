@@ -1,0 +1,3 @@
+[run]
+source = gym_login
+omit = gym_login/test*
