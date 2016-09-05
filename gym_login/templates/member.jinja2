@@ -1,0 +1,52 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+<div class="content">
+    {% if member.id != None %}
+        <h1>Edit User</h1>
+    {% else %}
+        <h1>Add User</h1>
+    {% endif %}
+    <form action="/member/{{member.id or 'new'}}" method='POST'>
+        <div class="form-group">
+			<label for="inputFname">First Name</label>
+            <input type="text"
+                   class="form-control"
+                   id="inputFname"
+                   placeholder="Bob"
+                   name='fname'
+                   value="{{member.fname}}">
+		</div>
+		<div class="form-group">
+			<label for="inputLname">Last Name</label>
+            <input type="text"
+                   class="form-control"
+                   id="inputLname"
+                   placeholder="Builder"
+                   name='lname'
+                   value="{{member.lname}}">
+		</div>
+        <div class="form-group {{'has-error' if errors.get('member_id')}}">
+			<label for="inputMemberId">Member ID</label>
+            <input type="text"
+                   class="form-control"
+                   id="inputMemberId"
+                   placeholder="0000"
+                   name='member_id'
+                   value="{{member.member_id}}">
+		</div>
+        <div class="checkbox">
+			<label>
+                <input type="checkbox" checked={{member.active}}> Active
+			</label>
+		</div>
+		<button type="submit" class="btn btn-default">Submit</button>
+        {% if errors.get('member_id') %}
+            <span id="statusBlock" class="help-block">{{errors.get('member_id')}}</span>
+        {% endif %}
+	</form>
+    {% if errors.get('status') %}
+        <h2>{{errors['status']}}</h2>
+    {% endif %}
+</div>
+{% endblock content %}

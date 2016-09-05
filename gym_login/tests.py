@@ -127,9 +127,9 @@ class TestGymAdmin(BaseTest):
 
         from .models import MemberModel
 
-        model = MemberModel(fname='Test', member_id='3333', active=True)
-        inactive = MemberModel(fname='Inactive', member_id='0000', active=False)
-        self.session.add_all([model, inactive])
+        self.model = MemberModel(fname='Test', member_id='3333', active=True)
+        self.inactive = MemberModel(fname='Inactive', member_id='0000', active=False)
+        self.session.add_all([self.model, self.inactive])
 
     def test_get_add_member(self):
         """
@@ -151,3 +151,41 @@ class TestGymAdmin(BaseTest):
         request.POST['lname'] = 'User'
         info = add_member(request)
         assert info['errors']['status'] is not None
+
+    def test_add_member_dup_id(self):
+        """
+        Test adding a new member to the database when the user id already exists
+        """
+        from .views.admin import add_member
+        request = dummy_request(self.session)
+        request.method = 'POST'
+        request.POST['member_id'] = '3333'
+        request.POST['fname'] = 'Test'
+        request.POST['lname'] = 'User'
+        info = add_member(request)
+        assert len(info['errors']) == 1
+        assert info['member'].fname == 'Test'
+        assert info['member'].lname == 'User'
+        assert info['member'].member_id == '3333'
+
+    def test_update_member(self):
+        """
+        Test adding a new member to the database
+        """
+        from .views.admin import add_member
+        from .models import MemberModel
+
+        cur_id = self.session.query(MemberModel).\
+            filter(MemberModel.member_id == '3333').first().id
+        request = dummy_request(self.session)
+        request.method = 'POST'
+        request.matchdict['id'] = cur_id
+        request.POST['member_id'] = '3333'
+        request.POST['fname'] = 'Test'
+        request.POST['lname'] = 'User'
+        request.POST['active'] = 'false'
+        info = add_member(request)
+        assert len(info['errors']) == 0
+        model = self.session.query(MemberModel).\
+            filter(MemberModel.id == cur_id).first()
+        assert model.active is False
