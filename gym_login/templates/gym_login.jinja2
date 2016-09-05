@@ -16,8 +16,44 @@
     <form action="/" method='POST'>
         <div class="form-group {{'has-error' if errors.get('member_id') else ''}}">
             <label for="inputMemberId">Member ID</label>
-            <input type="text" class="form-control" id="inputMemberId" placeholder="1234"
-            name="member_id">
+            <input type="text"
+                   class="form-control"
+                   id="inputMemberId"
+                   placeholder="1234"
+                   name="member_id"
+                   maxlength="4"
+                   minlength="4"
+                   style="width:138px;">
+            <table>
+            {% for row in range(0, 3) %}
+                <tr>
+                    {% for col in range(0, 3) %}
+                        <td>
+                            <button
+                                class="btn btn-default btn-lg"
+                                onclick="addNum({{col + 1 + (row * 3)}});"
+                                type="button">{{col + 1 + (row * 3)}}
+                            </button>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>
+                    <button class="btn btn-default btn-lg"
+                            onclick="addNum(0);"
+                            type="button">0
+                    </button>
+                </td>
+                <td colspan=2>
+                    <button class="btn btn-default btn-lg"
+                            onclick="delNum();"
+                            style="width: 90px;"
+                            type="button">&#9003;
+                    </button>
+                </td>
+            </table>
+
             {% if errors.get('member_id') %}
                 <span id="helpBlock2" class="help-block">{{errors['member_id']}}</span>
             {% endif %}
@@ -25,6 +61,25 @@
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
 </div>
+<script type='application/javascript'>
+function addNum(num) {
+    $('#inputMemberId').val(function appendVal(index, val) {
+        if (val.length >= 4) {
+            return val;
+        }
+        return val + num;
+    });
+}
+
+function delNum(num) {
+    $('#inputMemberId').val(function removeVal(index, val) {
+        if (val.length <= 0) {
+            return val;
+        }
+        return val.substr(0, val.length - 1);
+    });
+}
+</script>
 {% endif %}
 
 {% endblock content %}
