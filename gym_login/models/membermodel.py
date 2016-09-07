@@ -36,7 +36,9 @@ class MemberModel(Base):
     # All member id's are 4 characters long...we hope
     member_id = Column(String(4), nullable=False)
     active = Column(Boolean(create_constraint=False))
-    logins = orm.relationship('LoginRecordModel', back_populates='member')
+    logins = orm.relationship('LoginRecordModel',
+                              back_populates='member',
+                              order_by='LoginRecordModel.date')
 
     @hybrid_property
     def name(self):

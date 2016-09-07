@@ -10,3 +10,4 @@ def includeme(config):
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('gym_login', '/')
     config.add_route('member', r'/member/{id:(\d+|new)}')
+    config.add_route('all_members', r'/members')

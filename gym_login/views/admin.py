@@ -6,8 +6,9 @@ import logging
 from pyramid.view import view_config
 
 from sqlalchemy.exc import DBAPIError
+from sqlalchemy import desc
 
-from ..models import MemberModel
+from ..models import MemberModel, LoginRecordModel
 
 LOG = logging.getLogger(__name__)
 
@@ -54,7 +55,7 @@ def add_member(request):
         member.fname = request.POST.get('fname', '')
         member.lname = request.POST.get('lname', '')
         member.member_id = request.POST.get('member_id')
-        member.active = request.POST.get('active') == 'true'
+        member.active = request.POST.get('active') == 'on'
 
         # TODO: Validate that it's all digits
         if len(request.POST.get('member_id', '')) != 4:
@@ -66,6 +67,8 @@ def add_member(request):
             request.dbsession.add(member)
             member = MemberModel(fname='', lname='', member_id='', active=True)
             errors['status'] = "Successfully created user."
+        else:
+            errors['status'] = "Successfully updated user."
 
     elif request.method == 'DELETE':
         if member.id is not None:
@@ -73,3 +76,28 @@ def add_member(request):
             member.active = False
 
     return {'errors': errors, 'member': member}
+
+
+@view_config(route_name='all_members', renderer='../templates/member_list.jinja2')
+def all_members(request):
+    """
+    View All Members
+    """
+    members_query = request.dbsession.query(MemberModel)
+    sorter = request.params.get('sort', 'lname')
+    order = request.params.get('order', 'asc')
+    if sorter == 'last_signin':
+        members_query = members_query.join(MemberModel.logins)
+        if order == 'desc':
+            members_query = members_query.order_by(desc(LoginRecordModel.date))
+        else:
+            members_query = members_query.order_by(LoginRecordModel.date)
+    else:
+        if order == 'desc':
+            members_query = members_query.order_by(desc("LOWER({0})".format(sorter)))
+        else:
+            members_query = members_query.order_by("LOWER({0})".format(sorter))
+
+    members = members_query.all()
+
+    return {'members': members, 'sorter': sorter, 'order': order, 'page_name': 'members'}

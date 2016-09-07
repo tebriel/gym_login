@@ -1,7 +1,13 @@
-{% extends "layout.jinja2" %}
+{% extends "admin_layout.jinja2" %}
 
 {% block content %}
 <div class="content">
+    {% if errors['status'] is defined %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{errors['status']}}
+        </div>
+    {% endif %}
     {% if member.id != None %}
         <h1>Edit User</h1>
     {% else %}
@@ -37,7 +43,7 @@
 		</div>
         <div class="checkbox">
 			<label>
-                <input type="checkbox" checked={{member.active}}> Active
+                <input type="checkbox" {{'checked' if member.active}} name='active'> Active
 			</label>
 		</div>
 		<button type="submit" class="btn btn-default">Submit</button>
@@ -45,8 +51,5 @@
             <span id="statusBlock" class="help-block">{{errors.get('member_id')}}</span>
         {% endif %}
 	</form>
-    {% if errors.get('status') %}
-        <h2>{{errors['status']}}</h2>
-    {% endif %}
 </div>
 {% endblock content %}

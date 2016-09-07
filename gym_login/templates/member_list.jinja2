@@ -1,0 +1,44 @@
+{% extends "admin_layout.jinja2" %}
+
+{% macro headerTitle(text, orderBy) -%}
+{{text}}{% if orderBy == sorter %}
+    {{ "\u25B2" if order == 'asc' else "\u25BC" }}
+{% endif %}
+{%- endmacro %}
+
+{% macro headerLink(orderBy) -%}
+/members?sort={{orderBy}}{% if orderBy == sorter %}&order={{ 'desc' if order == 'asc' else 'asc'}}{% else %}{% endif %}
+{%- endmacro %}
+
+{% macro login_time(logins) -%}
+{% if logins|length == 0 %}
+    N/A
+{% else %}
+    {{logins[0].date}}
+{% endif %}
+{%- endmacro %}
+
+{% block content %}
+<div class="content">
+    <table class="table table-striped">
+        <thead>
+            <th><a href="{{headerLink('fname')}}">{{headerTitle('First Name', 'fname')}}</a></th>
+            <th><a href="{{headerLink('lname')}}">{{headerTitle('Last Name', 'lname')}}</a></th>
+            <th><a href="{{headerLink('member_id')}}">{{headerTitle('Member ID', 'member_id')}}</a></th>
+            <th><a href="{{headerLink('last_signin')}}">{{headerTitle('Last Signin', 'last_signin')}}</a></th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+        {% for member in members %}
+        <tr>
+            <td>{{member.fname}}</td>
+            <td>{{member.lname}}</td>
+            <td>{{member.member_id}}</td>
+            <td>{{login_time(member.logins)}}</td>
+            <td><a class="btn btn-warning" href="/member/{{member.id}}" role="button">Edit</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

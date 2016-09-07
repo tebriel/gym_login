@@ -185,7 +185,7 @@ class TestGymAdmin(BaseTest):
         request.POST['lname'] = 'User'
         request.POST['active'] = 'false'
         info = add_member(request)
-        assert len(info['errors']) == 0
+        assert len(info['errors']) == 1
         model = self.session.query(MemberModel).\
             filter(MemberModel.id == cur_id).first()
         assert model.active is False
