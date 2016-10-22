@@ -1,0 +1,16 @@
+pyramid==1.7
+pyramid_jinja2
+pyramid_tm
+pyramid_debugtoolbar
+SQLAlchemy
+transaction
+zope.sqlalchemy
+google-api-python-client
+gunicorn
+gevent
+pytz
+
+pylint
+pytest
+pytest-cov
+WebTest>=1.3.1

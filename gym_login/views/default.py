@@ -2,13 +2,11 @@
 Default views
 """
 import logging
+from datetime import datetime
 
-from pyramid.response import Response
 from pyramid.view import view_config
 
-from sqlalchemy.exc import DBAPIError
-
-from ..models import MemberModel, LoginRecordModel
+from ..sheets import add_login
 
 LOG = logging.getLogger(__name__)
 
@@ -23,21 +21,9 @@ def gym_login(request):
     if 'member_id' in request.POST:
         LOG.debug('Got a POST submission')
         member_id = request.params.get('member_id', None)
-        try:
-            query = request.dbsession.query(MemberModel)
-            one = query.filter(MemberModel.member_id == member_id).\
-                filter_by(active=True).first()
-            if one is None:
-                errors = {'member_id': 'Member ID Not Found'}
-                LOG.error('Member ID Not Found: %s', member_id)
-            else:
-                record = LoginRecordModel(member_id=one.id)
-                request.dbsession.add(record)
-        except DBAPIError:
-            return Response(DB_ERR_MSG, content_type='text/plain', status=500)
-
-        if len(errors) == 0:
-            return {'data': request.params['member_id'], 'name': one.name, 'success': True}
+        if member_id is not None:
+            now = datetime.now()
+            add_login(now, member_id)
 
     # Normal page loading/erroring
     return {'gym_name': 'Atlanta Barbell', 'errors': errors, 'success': False}
