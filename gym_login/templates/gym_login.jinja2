@@ -4,9 +4,10 @@
 {% if success %}
 <div class="content">
     <h1>Welcome, {{name}}!</h1>
+    <h3>Let the gainzzz begin!</h3>
     <a class="btn btn-default" href="/" role="button">Login</a>
     <script type='application/javascript'>
-    window.setTimeout(function reloadPage(){ window.location.pathname=''; }, 15*1000);
+    window.setTimeout(function reloadPage(){ window.location.pathname=''; }, 5*1000);
     </script>
 </div>
 {% else %}
@@ -23,7 +24,8 @@
                    name="member_id"
                    maxlength="4"
                    minlength="4"
-                   style="width:138px;">
+                   style="width:138px;"
+                   autofocus>
             <table>
             {% for row in range(2, -1, -1) %}
                 <tr>

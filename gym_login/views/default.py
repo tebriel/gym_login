@@ -24,6 +24,10 @@ def gym_login(request):
         if member_id is not None:
             now = datetime.now()
             add_login(now, member_id)
+            return {'gym_name': 'Atlanta Barbell', 'errors': errors, 'success': True,
+                    'name': 'Lifter'}
+        else:
+            errors = {'member_id': 'Error with Member ID'}
 
     # Normal page loading/erroring
     return {'gym_name': 'Atlanta Barbell', 'errors': errors, 'success': False}
