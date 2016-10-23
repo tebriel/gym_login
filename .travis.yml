@@ -5,4 +5,4 @@ python:
   - "nightly" # currently points to 3.6-dev
 # command to run tests
 install: python setup.py develop
-script: py.test
+# script: py.test
