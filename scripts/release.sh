@@ -3,12 +3,15 @@
 set -euox pipefail
 
 API_TOKEN=${API_TOKEN?Github API Token must be set}
+NOW=${1?Must set tag for release}
 REPO_URL=https://api.github.com/repos/tebriel/gym_login/releases
 TAG_NAME=$(date +%s)
 COMMITISH=$(git rev-parse HEAD)
 NAME="Release: ${TAG_NAME}"
 BODY="Auto Release"
 ASSET_NAME="assets.tar.gz"
+
+sed -i -e 's/:latest/:'"${NOW}"'/' release/docker-compose.yml
 
 RELEASE_JSON="
     {

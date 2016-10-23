@@ -1,15 +1,17 @@
 .PHONY: build push release
 
-all: build test push release
+NOW=$(shell printf `cat TAG`)
+
+all: date build push release
 
 build:
-	docker build -t cmoultrie/gym_login:latest .
+	docker build -t cmoultrie/gym_login:${NOW} .
 
 push:
-	docker push cmoultrie/gym_login:latest .
-
-test: build
-	docker run --rm cmoultrie/gym_login:latest py.test
+	docker push cmoultrie/gym_login:${NOW}
 
 release:
-	./scripts/release.sh
+	./scripts/release.sh ${NOW}
+
+date:
+	echo `date +%s` > TAG
