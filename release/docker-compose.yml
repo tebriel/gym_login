@@ -1,0 +1,19 @@
+---
+version: '2'
+services:
+  gym_login:
+    image: cmoultrie/gym_login:latest
+    restart: always
+    container_name: gym_login
+    environment:
+      - SHEET_ID
+    volumes:
+      - /etc/gym_login:/data
+  nginx:
+    image: nginx:1.10-alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf:ro

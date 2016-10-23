@@ -69,7 +69,6 @@ def add_login(login_date, login_id):
     login_date = pytz.utc.localize(login_date)
 
     spreadsheet_id = SHEET_ID
-    range_name = 'Form Responses 1'
     disp_date = login_date.astimezone(eastern).strftime('%m/%d/%Y %H:%M:%S')
     body = {
         'values': [[disp_date, login_id]]
@@ -77,7 +76,7 @@ def add_login(login_date, login_id):
     value_input_option = 'USER_ENTERED'
 
     result = SERVICE.spreadsheets().values().append(
-        spreadsheetId=spreadsheet_id, range=range_name,
+        spreadsheetId=spreadsheet_id, range=SHEET_FORM,
         valueInputOption=value_input_option,
         body=body)
     result.execute()
