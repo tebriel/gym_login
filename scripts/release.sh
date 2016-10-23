@@ -8,6 +8,7 @@ TAG_NAME=$(date +%s)
 COMMITISH=$(git rev-parse HEAD)
 NAME="Release: ${TAG_NAME}"
 BODY="Auto Release"
+ASSET_NAME="assets.tar.gz"
 
 RELEASE_JSON="
     {
@@ -18,7 +19,15 @@ RELEASE_JSON="
     }
     "
 
-curl -XPOST \
+tar cvzf ${ASSET_NAME} release
+
+UPLOAD_URL=$(curl -XPOST \
     -H "Authorization: token ${API_TOKEN}" \
     -d "${RELEASE_JSON}" \
-    ${REPO_URL}
+    ${REPO_URL} | jq ".upload_url" | sed -e 's/{?name,label}//' -e 's/"//g')
+
+curl -XPOST \
+    -H "Authorization: token ${API_TOKEN}" \
+    -H "Content-Type: application/compressed-tar" \
+    --data-binary "@${ASSET_NAME}" \
+    "${UPLOAD_URL}?name=${ASSET_NAME}"

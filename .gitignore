@@ -5,3 +5,4 @@
 *.sqlite
 __pycache__
 secrets.fish
+assets.tar.gz

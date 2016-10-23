@@ -1,5 +1,7 @@
 .PHONY: build push release
 
+all: build push release
+
 build:
 	docker build -t cmoultrie/gym_login:latest .
 
