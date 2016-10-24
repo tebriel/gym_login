@@ -168,7 +168,6 @@ button.abb-btn-2x {
 
 button.abb-btn-submit {
     width: 455px;
-    margin-left: 136px;
     background-color: #47b268;
 }
 
@@ -192,12 +191,12 @@ input.abb-login-input {
     height: 150px;
     font-size: 70px;
     text-align: center;
+	margin-bottom: 2px;
 }
 
 img.abb-logo {
     height: 199px;
     width: 199px;
-    margin-left: 270px;
     margin-bottom: 10px;
     margin-top: 10px;
     display: inline-block;

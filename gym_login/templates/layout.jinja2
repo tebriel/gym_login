@@ -27,7 +27,7 @@
     <![endif]-->
   </head>
 
-  <body style="background-color: #717070;>
+  <body style="background-color: #717070;">
 
     <div class="starter-template">
       <div class="container">
@@ -46,5 +46,15 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="//oss.maxcdn.com/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script type="application/javascript">
+		var lastTouchEnd = 0;
+		document.documentElement.addEventListener('touchend', function (event) {
+			var now = (new Date()).getTime();
+			if (now - lastTouchEnd <= 100) {
+				event.preventDefault();
+			}
+			lastTouchEnd = now;
+		}, false);
+    </script>
   </body>
 </html>
