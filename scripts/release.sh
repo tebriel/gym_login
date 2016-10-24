@@ -11,7 +11,7 @@ NAME="Release: ${TAG_NAME}"
 BODY="Auto Release"
 ASSET_NAME="assets.tar.gz"
 
-sed -i 's/:latest/:'"${NOW}"'/' release/docker-compose.yml
+sed -i -e 's/:latest/:'"${NOW}"'/' release/docker-compose.yml
 
 RELEASE_JSON="
     {
