@@ -16,9 +16,7 @@
     <!-- Custom styles for this scaffold -->
     <link href="{{request.static_path('gym_login:static/theme.css')}}" rel="stylesheet">
     <script src="{{request.static_path('gym_login:static/webshim/polyfiller.js')}}"></script>
-    <script type='application/javascript'>
-        webshim.polyfill('forms');
-    </script>
+    <script src="{{request.static_path('gym_login:static/fastclick/fastclick.js')}}"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -47,14 +45,12 @@
     <script src="//oss.maxcdn.com/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
     <script type="application/javascript">
-		var lastTouchEnd = 0;
-		document.documentElement.addEventListener('touchend', function (event) {
-			var now = (new Date()).getTime();
-			if (now - lastTouchEnd <= 100) {
-				event.preventDefault();
-			}
-			lastTouchEnd = now;
-		}, false);
+        webshim.polyfill('forms');
+		if ('addEventListener' in document) {
+			document.addEventListener('DOMContentLoaded', function() {
+				FastClick.attach(document.body);
+			}, false);
+		}
     </script>
   </body>
 </html>
