@@ -15,6 +15,10 @@
 
     <!-- Custom styles for this scaffold -->
     <link href="{{request.static_path('gym_login:static/theme.css')}}" rel="stylesheet">
+    <script src="{{request.static_path('gym_login:static/webshim/polyfiller.js')}}"></script>
+    <script type='application/javascript'>
+        webshim.polyfill('forms');
+    </script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
