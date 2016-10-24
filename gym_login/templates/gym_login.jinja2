@@ -4,27 +4,27 @@
 {% if success %}
 <div class="content">
     <h1>Welcome, {{name}}!</h1>
-    <h3>Let the gainzzz begin!</h3>
-    <a class="btn btn-default" href="/" role="button">Login</a>
+    <h2>Let the gainzzz begin!</h2>
+    <a href="/">
+        <img class="abb-logo"
+             src="{{request.static_url('gym_login:static/logo.png')}}">
+    </a>
     <script type='application/javascript'>
-    window.setTimeout(function reloadPage(){ window.location.pathname=''; }, 5*1000);
+    window.setTimeout(function reloadPage(){ window.location.pathname=''; }, 3.5*1000);
     </script>
 </div>
 {% else %}
 <div class="content">
     <h1>Welcome to {{gym_name}}</h1>
-    <h2>Please Sign In</h2>
     <form action="/" method='POST'>
-        <div class="form-group {{'has-error' if errors.get('member_id') else ''}}">
-            <label for="inputMemberId">Member ID</label>
+        <div class="form-group abb-login-form {{'has-error' if errors.get('member_id') else ''}}">
             <input type="text"
-                   class="form-control"
+                   class="form-control abb-login-input"
                    id="inputMemberId"
                    placeholder="1234"
                    name="member_id"
                    maxlength="4"
                    minlength="4"
-                   style="width:138px;"
                    autofocus
                    required>
             <table>
@@ -33,7 +33,7 @@
                     {% for col in range(0, 3) %}
                         <td>
                             <button
-                                class="btn btn-default btn-lg"
+                                class="btn btn-default btn-lg abb-btn-std"
                                 onclick="addNum({{col + 1 + (row * 3)}});"
                                 type="button">{{col + 1 + (row * 3)}}
                             </button>
@@ -43,15 +43,14 @@
             {% endfor %}
             <tr>
                 <td>
-                    <button class="btn btn-default btn-lg"
+                    <button class="btn btn-default btn-lg abb-btn-std"
                             onclick="addNum(0);"
                             type="button">0
                     </button>
                 </td>
                 <td colspan=2>
-                    <button class="btn btn-default btn-lg"
+                    <button class="btn btn-default abb-btn-std abb-btn-2x"
                             onclick="delNum();"
-                            style="width: 90px;"
                             type="button">&#9003;
                     </button>
                 </td>
@@ -61,7 +60,8 @@
                 <span id="helpBlock2" class="help-block">{{errors['member_id']}}</span>
             {% endif %}
         </div>
-        <button type="submit" class="btn btn-success btn-lg">Submit</button>
+        <button type="submit"
+                class="btn btn-success btn-lg abb-btn-std abb-btn-submit">Log In</button>
     </form>
 </div>
 <script type='application/javascript'>

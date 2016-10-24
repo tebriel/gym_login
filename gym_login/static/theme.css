@@ -152,3 +152,53 @@ p {
     margin-top: 20px;
   }
 }
+
+button.abb-btn-std {
+    color: #fff;
+    background-color: #0e67a7;
+    border-color: transparent;
+    font-size: 70px;
+    width: 150px;
+    height: 150px;
+}
+
+button.abb-btn-2x {
+    width: 302px;
+}
+
+button.abb-btn-submit {
+    width: 455px;
+    margin-left: 136px;
+    background-color: #47b268;
+}
+
+h1 {
+    text-align: center;
+    color: #fff;
+}
+
+h2 {
+    text-align: center;
+    color: #f0f0f0;
+}
+
+div.abb-login-form {
+    margin-left: 136px;
+    margin-bottom: 2px;
+}
+
+input.abb-login-input {
+    width: 455px;
+    height: 150px;
+    font-size: 70px;
+    text-align: center;
+}
+
+img.abb-logo {
+    height: 199px;
+    width: 199px;
+    margin-left: 270px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    display: inline-block;
+}
