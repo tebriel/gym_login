@@ -16,7 +16,8 @@ cp -R release ${REL_DIR}
 
 pushd ${REL_DIR}
 
-sed -e 's/:latest/:'"${NOW}"'/' -i release/docker-compose.yml
+sed -i .orig -e 's/:latest/:'"${NOW}"'/' release/docker-compose.yml
+rm release/docker-compose.yml.orig
 
 RELEASE_JSON="
     {
