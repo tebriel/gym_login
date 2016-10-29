@@ -2,7 +2,7 @@
 version: '2'
 services:
   gym_login:
-    image: cmoultrie/gym_login:1477268116
+    image: cmoultrie/gym_login:latest
     restart: always
     container_name: gym_login
     environment:
