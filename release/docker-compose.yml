@@ -7,6 +7,7 @@ services:
     container_name: gym_login
     environment:
       - SHEET_ID
+      - SHEET_FORM
     volumes:
       - /etc/gym_login:/data
   nginx:
