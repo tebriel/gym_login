@@ -1,6 +1,7 @@
 """
 Default views
 """
+import os
 import logging
 from datetime import datetime
 
@@ -8,6 +9,7 @@ from pyramid.view import view_config
 
 from ..sheets import add_login
 
+DEVELOPMENT = os.getenv('DEVELOPMENT') == 'True'
 LOG = logging.getLogger(__name__)
 
 
@@ -25,12 +27,13 @@ def gym_login(request):
             now = datetime.now()
             add_login(now, member_id)
             return {'gym_name': 'Atlanta Barbell', 'errors': errors, 'success': True,
-                    'name': 'Lifter'}
+                    'name': 'Lifter', 'development': DEVELOPMENT}
         else:
-            errors = {'member_id': 'Error with Member ID'}
+            errors = {'member_id': 'Error with Member ID', 'development': DEVELOPMENT}
 
     # Normal page loading/erroring
-    return {'gym_name': 'Atlanta Barbell', 'errors': errors, 'success': False}
+    return {'gym_name': 'Atlanta Barbell', 'errors': errors, 'success': False,
+            'development': DEVELOPMENT}
 
 
 DB_ERR_MSG = """\

@@ -13,6 +13,7 @@ run:
 		-p 8080:80 \
 		-e SHEET_ID \
 		-e SHEET_FORM='Form Responses 1' \
+		-e DEVELOPMENT=True \
 		-v /Users/tebriel/.credentials:/data \
 		-v $(shell pwd)/gym_login:/usr/src/app/gym_login:ro \
 		cmoultrie/gym_login:latest \

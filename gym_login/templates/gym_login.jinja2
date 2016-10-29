@@ -2,17 +2,20 @@
 
 {% block content %}
 {% if success %}
-<div class="content">
+<div class="numpad">
     <h1>Welcome, {{name}}!</h1>
     <h2>Let the gainzzz begin!</h2>
-    <a href="/">
-        <img class="abb-logo"
-             src="{{request.static_path('gym_login:static/logo.png')}}">
-    </a>
-    <script type='application/javascript'>
-    window.setTimeout(function reloadPage(){ window.location.pathname=''; }, 3.5*1000);
-    </script>
 </div>
+<div class="abb-logo">
+    <a href="/">
+        <img src="{{request.static_path('gym_login:static/logo.png')}}">
+    </a>
+</div>
+    {% if not development %}
+    <script type='application/javascript'>
+        window.setTimeout(function reloadPage(){ window.location.pathname=''; }, 3.5*1000);
+    </script>
+    {% endif %}
 {% else %}
 <div class="numpad">
     <h1>Welcome to {{gym_name}}</h1>

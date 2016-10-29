@@ -193,13 +193,13 @@ input.abb-login-input {
 	margin-bottom: 2px;
 }
 
-img.abb-logo {
+div.abb-logo {
     height: 199px;
     width: 199px;
     margin-bottom: 10px;
     margin-top: 10px;
-    margin-left: 2px;
-    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 div.numpad {
