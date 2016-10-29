@@ -8,13 +8,15 @@ build:
 	docker build -t cmoultrie/gym_login:${NOW} .
 	docker tag cmoultrie/gym_login:${NOW} cmoultrie/gym_login:latest
 
-run: build
+run:
 	docker run --rm -it \
 		-p 8080:80 \
 		-e SHEET_ID \
 		-e SHEET_FORM='Form Responses 1' \
 		-v /Users/tebriel/.credentials:/data \
-		cmoultrie/gym_login:latest
+		-v $(shell pwd)/gym_login:/usr/src/app/gym_login:ro \
+		cmoultrie/gym_login:latest \
+		pserve production.ini
 
 push:
 	docker push cmoultrie/gym_login:${NOW}

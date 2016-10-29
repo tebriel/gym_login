@@ -11,7 +11,12 @@ NAME="Release: ${TAG_NAME}"
 BODY="Auto Release"
 ASSET_NAME="assets.tar.gz"
 
-sed -i -e 's/:latest/:'"${NOW}"'/' release/docker-compose.yml
+REL_DIR=$(mktemp -d)
+cp -R release ${REL_DIR}
+
+pushd ${REL_DIR}
+
+sed -e 's/:latest/:'"${NOW}"'/' -i release/docker-compose.yml
 
 RELEASE_JSON="
     {
@@ -34,3 +39,6 @@ curl -XPOST \
     -H "Content-Type: application/compressed-tar" \
     --data-binary "@${ASSET_NAME}" \
     "${UPLOAD_URL}?name=${ASSET_NAME}"
+
+popd
+rm -r ${REL_DIR}
