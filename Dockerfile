@@ -4,8 +4,8 @@ EXPOSE 80
 
 VOLUME ["/data"]
 
-ENV SHEET_ID= \
-    SHEET_FORM= \
+ENV LOGIN_SHEET_ID= \
+    USERS_SHEET_ID= \
     DEVELOPMENT=False
 
 RUN pip install -e .

@@ -5,9 +5,10 @@ import os
 import logging
 from datetime import datetime
 
+from googleapiclient.errors import HttpError
 from pyramid.view import view_config
 
-from ..sheets import add_login
+from ..sheets import add_login, get_username
 
 DEVELOPMENT = os.getenv('DEVELOPMENT') == 'True'
 LOG = logging.getLogger(__name__)
@@ -25,11 +26,16 @@ def gym_login(request):
         member_id = request.params.get('member_id', None)
         if member_id is not None:
             now = datetime.now()
-            add_login(now, member_id)
+            try:
+                add_login(now, member_id)
+            except HttpError:
+                errors['member_id'] = "Unable to record login, system offline."
+                return {'gym_name': 'Atlanta Barbell', 'errors': errors, 'success': False,
+                        'development': DEVELOPMENT}
+
+            name = get_username(member_id)
             return {'gym_name': 'Atlanta Barbell', 'errors': errors, 'success': True,
-                    'name': 'Lifter', 'development': DEVELOPMENT}
-        else:
-            errors = {'member_id': 'Error with Member ID', 'development': DEVELOPMENT}
+                    'name': name, 'development': DEVELOPMENT}
 
     # Normal page loading/erroring
     return {'gym_name': 'Atlanta Barbell', 'errors': errors, 'success': False,

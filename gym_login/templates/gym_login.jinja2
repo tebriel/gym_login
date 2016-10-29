@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if success %}
-<div class="numpad">
+<div class="abb-numpad">
     <h1>Welcome, {{name}}!</h1>
     <h2>Let the gainzzz begin!</h2>
 </div>
@@ -17,8 +17,11 @@
     </script>
     {% endif %}
 {% else %}
-<div class="numpad">
+<div class="abb-numpad">
     <h1>Welcome to {{gym_name}}</h1>
+    {% if errors.get('member_id') %}
+        <span><h3 class='abb-error'>{{errors['member_id']}}</h3></span>
+    {% endif %}
     <form action="/" method='POST'>
         <div class="form-group abb-login-form {{'has-error' if errors.get('member_id') else ''}}">
             <input type="text"
@@ -58,9 +61,6 @@
                 </td>
             </table>
 
-            {% if errors.get('member_id') %}
-                <span id="helpBlock2" class="help-block">{{errors['member_id']}}</span>
-            {% endif %}
         </div>
         <button type="submit"
                 class="btn btn-success btn-lg abb-btn-std abb-btn-submit">Log In</button>

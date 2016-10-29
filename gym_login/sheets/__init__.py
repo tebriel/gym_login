@@ -10,6 +10,7 @@ from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
+from googleapiclient.errors import HttpError
 
 LOG = logging.getLogger(__name__)
 
@@ -25,11 +26,13 @@ DATA_DIR = os.getenv('DATA_DIR', '/data')
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
 CLIENT_SECRET_FILE = os.path.join(DATA_DIR, 'client_secret.json')
 APPLICATION_NAME = 'Google Sheets API Python Quickstart'
-SHEET_ID = os.getenv('SHEET_ID')
-SHEET_FORM = os.getenv('SHEET_FORM', 'Form Responses 1')
+LOGIN_SHEET_ID = os.getenv('LOGIN_SHEET_ID')
+LOGIN_SHEET_FORM = 'Form Responses 1'
+USERS_SHEET_ID = os.getenv('USERS_SHEET_ID')
+USERS_SHEET_FORM = 'Sheet1'
 
-if SHEET_ID is None:
-    raise Exception("SHEET_ID must be set")
+if None in [LOGIN_SHEET_ID, USERS_SHEET_ID]:
+    raise Exception("LOGIN_SHEET_ID and USERS_SHEET_ID must be set")
 
 
 def get_service():
@@ -58,17 +61,14 @@ def get_service():
 
 
 def add_login(login_date, login_id):
-    """Shows basic usage of the Sheets API.
-
-    Creates a Sheets API service object and prints the names and majors of
-    students in a sample spreadsheet:
-    https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+    """
+    Adds a login entry to the Google Sheet
     """
     LOG.info("Seeing new login from: %s", login_id)
     eastern = pytz.timezone('US/Eastern')
     login_date = pytz.utc.localize(login_date)
 
-    spreadsheet_id = SHEET_ID
+    spreadsheet_id = LOGIN_SHEET_ID
     disp_date = login_date.astimezone(eastern).strftime('%m/%d/%Y %H:%M:%S')
     body = {
         'values': [[disp_date, login_id]]
@@ -76,10 +76,38 @@ def add_login(login_date, login_id):
     value_input_option = 'USER_ENTERED'
 
     result = SERVICE.spreadsheets().values().append(
-        spreadsheetId=spreadsheet_id, range=SHEET_FORM,
+        spreadsheetId=spreadsheet_id, range=LOGIN_SHEET_FORM,
         valueInputOption=value_input_option,
         body=body)
-    result.execute()
+    try:
+        result.execute()
+    except HttpError as httpe:
+        LOG.exception('Unable to add login to sheet')
+        raise httpe
+
+
+def get_username(login_id):
+    """Shows basic usage of the Sheets API.
+
+    Creates a Sheets API service object and prints the names and majors of
+    students in a sample spreadsheet:
+    https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+    """
+    LOG.info("Getting username for: %s", login_id)
+    spreadsheet_id = USERS_SHEET_ID
+
+    result = SERVICE.spreadsheets().values().get(
+        spreadsheetId=spreadsheet_id, range="{0}!A2:C".format(USERS_SHEET_FORM))
+    try:
+        res = result.execute()
+    except HttpError:
+        LOG.exception('Unable to fetch Names Data')
+        return 'Lifter'
+
+    for row in res.get('values', []):
+        if row[2] == login_id:
+            return row[0]
+    return 'Lifter'
 
 # Setup
 SERVICE = get_service()

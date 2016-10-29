@@ -6,8 +6,8 @@ services:
     restart: always
     container_name: gym_login
     environment:
-      - SHEET_ID
-      - SHEET_FORM
+      - LOGIN_SHEET_ID
+      - USERS_SHEET_ID
     volumes:
       - /etc/gym_login:/data
   nginx:
