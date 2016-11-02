@@ -105,8 +105,10 @@ def get_username(login_id):
         return 'Lifter'
 
     for row in res.get('values', []):
+        if len(row) < 3:
+            continue
         if row[2] == login_id:
-            return row[0]
+            return "{0} {1}".format(row[0], row[1])
     return 'Lifter'
 
 # Setup
