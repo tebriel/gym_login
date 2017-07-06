@@ -14,6 +14,28 @@ DEVELOPMENT = os.getenv('DEVELOPMENT') == 'True'
 LOG = logging.getLogger(__name__)
 
 
+@view_config(route_name='login_user', renderer='json')
+def login_user(request):
+    """
+    Logs a user in using the API
+    """
+    member_id = request.matchdict.get('id', None)
+    errors = {}
+    name = 'Unknown'
+    success = False
+    if member_id is not None:
+        now = datetime.now()
+        try:
+            add_login(now, member_id)
+            name = get_username(member_id)
+            success = True
+        except HttpError:
+            print("die in a fire")
+
+    return {'gym_name': 'Atlanta Barbell', 'errors': errors, 'success': success,
+            'name': name, 'development': DEVELOPMENT, 'member_id': member_id}
+
+
 @view_config(route_name='gym_login', renderer='../templates/gym_login.jinja2')
 def gym_login(request):
     """
