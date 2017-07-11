@@ -102,14 +102,14 @@ def get_username(login_id):
         res = result.execute()
     except HttpError:
         LOG.exception('Unable to fetch Names Data')
-        return 'Lifter'
+        return
 
     for row in res.get('values', []):
         if len(row) < 3:
             continue
         if row[2] == login_id:
             return "{0} {1}".format(row[0], row[1])
-    return 'Lifter'
+    return
 
 # Setup
 SERVICE = get_service()

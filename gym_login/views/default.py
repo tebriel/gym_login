@@ -26,9 +26,10 @@ def login_user(request):
     if member_id is not None:
         now = datetime.now()
         try:
-            add_login(now, member_id)
             name = get_username(member_id)
-            success = True
+            if name:
+                add_login(now, member_id)
+                success = True
         except HttpError:
             print("die in a fire")
 
@@ -56,6 +57,8 @@ def gym_login(request):
                         'development': DEVELOPMENT}
 
             name = get_username(member_id)
+            if not name:
+                name = 'Lifter'
             return {'gym_name': 'Atlanta Barbell', 'errors': errors, 'success': True,
                     'name': name, 'development': DEVELOPMENT}
 
