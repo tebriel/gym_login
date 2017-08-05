@@ -29,10 +29,10 @@ def login_user(request):
             name = get_username(member_id)
             if name:
                 add_login(now, member_id)
+                success = True
             else:
                 name = 'Lifter'
 
-            success = True
         except HttpError:
             print("die in a fire")
 
