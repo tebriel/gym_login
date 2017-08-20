@@ -11,3 +11,4 @@ def includeme(config):
     config.add_route('gym_login', '/')
     config.add_route('login_user', r'/member/{id:\d+}')
     config.add_route('all_members', r'/members')
+    config.add_route('list_users', r'/list_users')

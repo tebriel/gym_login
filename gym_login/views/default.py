@@ -8,7 +8,7 @@ from datetime import datetime
 from googleapiclient.errors import HttpError
 from pyramid.view import view_config
 
-from ..sheets import add_login, get_username
+from ..sheets import add_login, get_username, get_usernames
 
 DEVELOPMENT = os.getenv('DEVELOPMENT') == 'True'
 LOG = logging.getLogger(__name__)
@@ -38,6 +38,14 @@ def login_user(request):
 
     return {'gym_name': 'Atlanta Barbell', 'errors': errors, 'success': success,
             'name': name, 'development': DEVELOPMENT, 'member_id': member_id}
+
+
+@view_config(route_name='list_users', renderer='json')
+def list_users(request):
+    """Gets the full list of users"""
+    result = get_usernames()
+
+    return result
 
 
 @view_config(route_name='gym_login', renderer='../templates/gym_login.jinja2')

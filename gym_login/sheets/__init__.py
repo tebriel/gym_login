@@ -86,6 +86,30 @@ def add_login(login_date, login_id):
         raise httpe
 
 
+def get_usernames():
+    """Gets all usernames/ids from the sheet
+    """
+    LOG.info("Getting usernames")
+    spreadsheet_id = USERS_SHEET_ID
+    data = {}
+
+    result = SERVICE.spreadsheets().values().get(
+        spreadsheetId=spreadsheet_id, range="{0}!A2:C".format(USERS_SHEET_FORM))
+    try:
+        res = result.execute()
+    except HttpError:
+        LOG.exception('Unable to fetch Names Data')
+        return data
+
+    for row in res.get('values', []):
+        if len(row) < 3:
+            # Not enough data
+            continue
+        data[row[2]] = "{0} {1}".format(row[0], row[1])
+
+    return data
+
+
 def get_username(login_id):
     """Shows basic usage of the Sheets API.
 
@@ -94,22 +118,11 @@ def get_username(login_id):
     https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
     """
     LOG.info("Getting username for: %s", login_id)
-    spreadsheet_id = USERS_SHEET_ID
 
-    result = SERVICE.spreadsheets().values().get(
-        spreadsheetId=spreadsheet_id, range="{0}!A2:C".format(USERS_SHEET_FORM))
-    try:
-        res = result.execute()
-    except HttpError:
-        LOG.exception('Unable to fetch Names Data')
-        return
+    data = get_usernames()
 
-    for row in res.get('values', []):
-        if len(row) < 3:
-            continue
-        if row[2] == login_id:
-            return "{0} {1}".format(row[0], row[1])
-    return
+    return data.get(login_id)
+
 
 # Setup
 SERVICE = get_service()
